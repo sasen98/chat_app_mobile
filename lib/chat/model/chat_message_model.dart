@@ -19,7 +19,8 @@ List<ChatMessageModel> dummyChatList = [
   const ChatMessageModel(
     conversationId: 1,
     senderId: 1,
-    message: 'I am other person',
+    message:
+        'I am other person aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
   ),
   const ChatMessageModel(
     conversationId: 1,
@@ -83,5 +84,15 @@ List<ChatMessageModel> dummyChatList = [
     conversationId: 1,
     senderId: 1,
     message: 'Mwola ka Bou',
+  ),
+  const ChatMessageModel(
+    conversationId: 1,
+    senderId: 2,
+    message: 'Dongol bou bhatty kha',
+  ),
+  const ChatMessageModel(
+    conversationId: 1,
+    senderId: 1,
+    message: 'kha kha bhattay kha wo gwaramari bhattay',
   ),
 ];

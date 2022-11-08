@@ -27,13 +27,14 @@ class IndividualMessageWidget extends StatelessWidget {
           SizedBox(height: 5.h),
           if (chatMessageModel.message != null) ...[
             Container(
+                constraints: BoxConstraints(minWidth: 0, maxWidth: 0.6.sw),
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(50.r),
+                  borderRadius: BorderRadius.circular(20.r),
                   color: chatMessageModel.senderId == 1
                       ? Colors.grey
                       : Colors.blue,
                 ),
-                padding: EdgeInsets.all(12.w),
+                padding: EdgeInsets.all(15.w),
                 child: Text(chatMessageModel.message!)),
           ],
         ],
