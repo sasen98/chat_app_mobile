@@ -2,8 +2,6 @@ import 'package:chat_app/widgets/custom_animated_button.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:chat_app/widgets/screen_padding.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -19,7 +17,7 @@ class LoginScreen extends StatelessWidget {
             children: [
               CustomTextFielWidget(
                   onChanged: (value) {},
-                  hintText: 'Mobile Number',
+                  hintText: 'Email Id',
                   keyboardType: TextInputType.name),
               SizedBox(height: 10.h),
               CustomTextFielWidget(
