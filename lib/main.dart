@@ -1,8 +1,10 @@
-import 'package:chat_app/chat/screens/chat_screen.dart';
+import 'package:chat_app/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/routes/route_generator.dart';
+import 'package:chat_app/routes/routes.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,13 +18,24 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
-      builder: (context, _) => MaterialApp(
-        debugShowCheckedModeBanner: false,
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: Colors.blue,
+      designSize: const Size(390, 844),
+      minTextAdapt: true,
+      splitScreenMode: true,
+      builder: (context, _) => MultiBlocProvider(
+        providers: [
+          BlocProvider<AuthBloc>(
+            create: (BuildContext context) => AuthBloc(),
+          ),
+        ],
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Flutter Demo',
+          theme: ThemeData(
+            primarySwatch: Colors.blue,
+          ),
+          onGenerateRoute: RouteGenerator.generateRoute,
+          initialRoute: Routes.loginScreenRoute,
         ),
-        home: const ChatScreen(),
       ),
     );
   }

@@ -11,9 +11,9 @@ class AuthRepo {
     final response = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
     try {
-      return left(response);
+      return left(response,);
     } catch (e) {
-      return right(const Failure());
+      return right( Failure(message: e.toString()));
     }
   }
 
@@ -24,7 +24,7 @@ class AuthRepo {
     try {
       return left(response);
     } catch (e) {
-      return right(const Failure());
+      return right(Failure(message: e.toString()));
     }
   }
 

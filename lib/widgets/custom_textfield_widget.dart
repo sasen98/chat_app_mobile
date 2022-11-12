@@ -14,6 +14,7 @@ class CustomTextFielWidget extends StatelessWidget {
   final double? borderRadius;
   final bool enabled;
   final Function(String)? onChanged;
+  final TextEditingController? controller;
 
   const CustomTextFielWidget({
     Key? key,
@@ -29,6 +30,7 @@ class CustomTextFielWidget extends StatelessWidget {
     this.borderRadius,
     this.enabled = true,
     this.onChanged,
+    this.controller,
   }) : super(key: key);
 
   @override
@@ -39,6 +41,7 @@ class CustomTextFielWidget extends StatelessWidget {
         valueListenable: obscureText,
         builder: (context, obscure, _) {
           return TextFormField(
+            controller: controller,
             keyboardType: keyboardType,
             obscureText: obscure,
             validator: validator,

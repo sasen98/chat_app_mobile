@@ -1,6 +1,5 @@
 import 'package:chat_app/chat/model/chat_message_model.dart';
 import 'package:chat_app/chat/widgets/chat_message_profile_icon.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 

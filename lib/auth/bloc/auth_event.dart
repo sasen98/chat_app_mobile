@@ -13,8 +13,8 @@ class AuthLoginEvent extends AuthEvent {
   const AuthLoginEvent({required this.email, required this.password});
 }
 
-class AuthSignInEvent extends AuthEvent {
+class AuthSignUpEvent extends AuthEvent {
   final String email;
   final String password;
-  const AuthSignInEvent({required this.email, required this.password});
+  const AuthSignUpEvent({required this.email, required this.password});
 }

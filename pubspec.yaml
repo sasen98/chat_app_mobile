@@ -20,9 +20,13 @@ dependencies:
 
   #bloc
   bloc: ^8.1.0
+  flutter_bloc: ^8.1.1
 
   #equatable
   equatable: ^2.0.5
+  
+  #get_it
+  get_it: ^7.2.0
   
   #dio
   dio: ^4.0.6

@@ -1,6 +1,6 @@
 import 'package:chat_app/chat/model/chat_message_model.dart';
 import 'package:chat_app/chat/widgets/individual_message_widget.dart';
-import 'package:chat_app/widgets/screen_padding.dart';
+import 'package:chat_app/widgets/screen_padding_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
