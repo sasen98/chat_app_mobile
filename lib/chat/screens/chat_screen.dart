@@ -4,8 +4,15 @@ import 'package:chat_app/chat/widgets/chat_input_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+class ChatScreenArgModel {
+  const ChatScreenArgModel({required this.chatId});
+  final String chatId;
+}
+
 class ChatScreen extends StatelessWidget {
-  const ChatScreen({Key? key}) : super(key: key);
+  const ChatScreen({Key? key, required this.chatScreenArgModel})
+      : super(key: key);
+  final ChatScreenArgModel chatScreenArgModel;
 
   @override
   Widget build(BuildContext context) {

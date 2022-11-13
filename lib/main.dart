@@ -33,12 +33,13 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData(
+          theme: ThemeData( 
             primarySwatch: Colors.blue,
           ),
           onGenerateRoute: RouteGenerator.generateRoute,
           initialRoute: Routes.loginScreenRoute,
           navigatorKey: NavigationService.navigatorKey,
+
         ),
       ),
     );

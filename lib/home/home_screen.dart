@@ -1,3 +1,6 @@
+import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/locator_service.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/widgets/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -6,13 +9,23 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      appBar: CustomAppbarWidget(
+    return Scaffold(
+      appBar: const CustomAppbarWidget(
         title: 'Home Screen',
         
       ),
       body: Center(
-        child: Text('Welcome to the app'),
+        child: Column(
+          children: [
+            const Text('Welcome to the app'),
+            ElevatedButton(
+                onPressed: () {
+                  locator<NavigationService>()
+                      .navigateTo(Routes.chatListScreenRoute);
+                },
+                child: const Text('Start Chat'))
+          ],
+        ),
       ),
     );
   }

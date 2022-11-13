@@ -1,3 +1,4 @@
+import 'package:chat_app/auth/repo/auth_repo.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
@@ -11,23 +12,31 @@ class CustomAppbarWidget extends StatelessWidget with PreferredSizeWidget {
     this.subtitle,
     this.actions,
     this.centerTitle = false,
-    this.isChat = false,
+    this.settingsNeeded = true,
   });
   final String title;
   final String? subtitle;
   final List<Widget>? actions;
   final bool centerTitle;
-  final bool isChat;
+  final bool settingsNeeded;
   @override
   Widget build(BuildContext context) {
     return AppBar(
       centerTitle: centerTitle,
       actions: [
-        IconButton(
-            onPressed: () => locator.get<NavigationService>().navigateTo(
-                  Routes.settingsScreenRoute,
-                ),
-            icon: const Icon(Icons.settings)),
+        !settingsNeeded
+            ? IconButton(
+                onPressed: () {
+                  AuthRepo().signOut();
+                  locator<NavigationService>()
+                      .pushNamedAndRemoveUntil(Routes.loginScreenRoute, false);
+                },
+                icon: const Icon(Icons.logout))
+            : IconButton(
+                onPressed: () => locator.get<NavigationService>().navigateTo(
+                      Routes.settingsScreenRoute,
+                    ),
+                icon: const Icon(Icons.settings)),
         if (actions != null) ...actions!,
       ],
       title: subtitle != null

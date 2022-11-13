@@ -4,6 +4,7 @@ import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
+import 'package:chat_app/widgets/screen_padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -49,33 +50,35 @@ class SignUpScreen extends StatelessWidget {
           return Center(
             child: Form(
               key: _formKey,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CustomTextFielWidget(
-                    hintText: 'Enter your email address',
-                    controller: _emailCtrl,
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomTextFielWidget(
-                    hintText: 'Enter your passwrord',
-                    controller: _passCtrl,
-                  ),
-                  SizedBox(height: 10.h),
-                  CustomTextFielWidget(
-                    hintText: 'Confirm password',
-                    controller: _confirmPassCtrl,
-                  ),
-                  SizedBox(height: 10.h),
-                  ElevatedButton(
-                      onPressed: () {
-                        _onSubmit(
-                            email: _emailCtrl.text,
-                            password: _passCtrl.text,
-                            ctx: context);
-                      },
-                      child: const Text('Sign Up'))
-                ],
+              child: ScreenPadding(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomTextFielWidget(
+                      hintText: 'Enter your email address',
+                      controller: _emailCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFielWidget(
+                      hintText: 'Enter your passwrord',
+                      controller: _passCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFielWidget(
+                      hintText: 'Confirm password',
+                      controller: _confirmPassCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    ElevatedButton(
+                        onPressed: () {
+                          _onSubmit(
+                              email: _emailCtrl.text,
+                              password: _passCtrl.text,
+                              ctx: context);
+                        },
+                        child: const Text('Sign Up'))
+                  ],
+                ),
               ),
             ),
           );
