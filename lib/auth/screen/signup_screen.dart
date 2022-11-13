@@ -1,5 +1,7 @@
 import 'package:chat_app/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/locator_service.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:flutter/material.dart';
@@ -32,7 +34,9 @@ class SignUpScreen extends StatelessWidget {
                 type: SnackBarType.success,
                 message: 'SignUp Successfully',
                 ctx: context);
-            Navigator.of(context).pushReplacementNamed(Routes.loginScreenRoute);
+            locator
+                .get<NavigationService>()
+                .pushNamedAndRemoveUntil(Routes.loginScreenRoute, false);
           }
           if (state.authStatus == AuthStatus.success) {
             showSnackBar(

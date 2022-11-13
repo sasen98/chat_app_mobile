@@ -13,7 +13,7 @@ class NavigationService {
     );
   }
 
-  void pop(bool value) {
+  void popWithBool(bool value) {
     return navigatorKey.currentState!.pop(value);
   }
 

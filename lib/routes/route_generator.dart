@@ -2,6 +2,7 @@ import 'package:chat_app/auth/screen/login_screen.dart';
 import 'package:chat_app/auth/screen/signup_screen.dart';
 import 'package:chat_app/home/home_screen.dart';
 import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/settings/settings_screen.dart';
 import 'package:flutter/material.dart';
 
 class RouteGenerator {
@@ -13,6 +14,8 @@ class RouteGenerator {
         return MaterialPageRoute(builder: (context) => SignUpScreen());
       case Routes.homeScreenRoute:
         return MaterialPageRoute(builder: (context) => const HomeScreen());
+      case Routes.settingsScreenRoute:
+        return MaterialPageRoute(builder: (context) => const SettingsScreen());
       default:
         return MaterialPageRoute(builder: (context) => LoginScreen());
     }

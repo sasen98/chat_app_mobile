@@ -1,5 +1,7 @@
 import 'package:chat_app/auth/bloc/auth_bloc.dart';
 import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/locator_service.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:chat_app/widgets/screen_padding_widget.dart';
@@ -33,8 +35,9 @@ class LoginScreen extends StatelessWidget {
                 type: SnackBarType.success,
                 message: 'Logged In Successfully',
                 ctx: context);
-            Navigator.of(context).pushNamedAndRemoveUntil(
-                Routes.homeScreenRoute, (route) => false);
+            locator
+                .get<NavigationService>()
+                .pushNamedAndRemoveUntil(Routes.homeScreenRoute, false);
           }
           if (state.authStatus == AuthStatus.failed) {
             showSnackBar(
@@ -69,15 +72,20 @@ class LoginScreen extends StatelessWidget {
                         },
                         child: const Text('SignUp Instead?')),
                     SizedBox(height: 10.h),
-                    ElevatedButton(
-                        onPressed: () {
-                          _onSubmit(
-                            context: context,
-                            email: _emailCtrl.text,
-                            password: _passCtrl.text,
-                          );
-                        },
-                        child: const Text('Login')),
+                    state.authStatus == AuthStatus.loading
+                        ? SizedBox(
+                            height: 20.h,
+                            width: 20.w,
+                            child: const CircularProgressIndicator())
+                        : ElevatedButton(
+                            onPressed: () {
+                              _onSubmit(
+                                context: context,
+                                email: _emailCtrl.text,
+                                password: _passCtrl.text,
+                              );
+                            },
+                            child: const Text('Login')),
                   ],
                 ),
               ),

@@ -1,3 +1,6 @@
+import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/locator_service.dart';
+import 'package:chat_app/services/navigation_service.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -20,7 +23,11 @@ class CustomAppbarWidget extends StatelessWidget with PreferredSizeWidget {
     return AppBar(
       centerTitle: centerTitle,
       actions: [
-        IconButton(onPressed: () {}, icon: const Icon(Icons.settings)),
+        IconButton(
+            onPressed: () => locator.get<NavigationService>().navigateTo(
+                  Routes.settingsScreenRoute,
+                ),
+            icon: const Icon(Icons.settings)),
         if (actions != null) ...actions!,
       ],
       title: subtitle != null

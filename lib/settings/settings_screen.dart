@@ -1,11 +1,16 @@
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
+import 'package:chat_app/widgets/custom_appbar_widget.dart';
+import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      appBar: CustomAppbarWidget(title: 'Settings'),
+      body: Center(
+        child: Text('Settings'),
+      ),
+    );
   }
 }
