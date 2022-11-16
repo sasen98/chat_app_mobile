@@ -1,6 +1,7 @@
 import 'package:chat_app/repo_response/repo_response.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 class AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -11,9 +12,11 @@ class AuthRepo {
     final response = await _firebaseAuth.signInWithEmailAndPassword(
         email: email, password: password);
     try {
-      return left(response,);
+      return left(
+        response,
+      );
     } catch (e) {
-      return right( Failure(message: e.toString()));
+      return right(Failure(message: e.toString()));
     }
   }
 
@@ -30,5 +33,21 @@ class AuthRepo {
 
   Future<void> signOut() async {
     await _firebaseAuth.signOut();
+  }
+
+// google signin
+  final googleSignIn = GoogleSignIn();
+  GoogleSignInAccount? _user;
+  GoogleSignInAccount get user => _user!;
+  Future googleSignin() async {
+    final googleAcc = await googleSignIn.signIn();
+    if (googleAcc == null) {
+      return;
+    }
+    _user = googleAcc;
+    final googleAuth = await googleAcc.authentication;
+    final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
+    await FirebaseAuth.instance.signInWithCredential(credential);
   }
 }

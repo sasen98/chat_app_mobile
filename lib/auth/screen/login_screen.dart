@@ -1,4 +1,5 @@
 import 'package:chat_app/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/auth/repo/auth_repo.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
@@ -8,6 +9,7 @@ import 'package:chat_app/widgets/screen_padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
@@ -85,7 +87,11 @@ class LoginScreen extends StatelessWidget {
                                 password: _passCtrl.text,
                               );
                             },
-                            child: const Text('Login')),
+                            child: const Text('Login'),
+                          ),
+                    InkWell(
+                        onTap: () => AuthRepo().googleSignin(),
+                        child: const FaIcon(FontAwesomeIcons.google)),
                   ],
                 ),
               ),
