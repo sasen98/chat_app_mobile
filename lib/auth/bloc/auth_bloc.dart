@@ -32,5 +32,16 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           (r) => state.copyWith(
               authStatus: AuthStatus.failed, message: r.message)));
     });
+    on<AuthGoogleSignInEvent>((event, emit) async {
+      emit(state.copyWith(authStatus: AuthStatus.loading));
+      final response = await AuthRepo().googleSignin();
+      emit(response.fold(
+          (l) => state.copyWith(
+                authStatus: AuthStatus.success,
+                user: l,
+              ),
+          (r) => state.copyWith(
+              authStatus: AuthStatus.failed, message: r.message)));
+    });
   }
 }

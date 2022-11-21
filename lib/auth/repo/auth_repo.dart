@@ -32,22 +32,28 @@ class AuthRepo {
   }
 
   Future<void> signOut() async {
+    await googleSignIn.disconnect();
     await _firebaseAuth.signOut();
+
   }
 
 // google signin
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
-  Future googleSignin() async {
+  Future<Either<UserCredential, Failure>> googleSignin() async {
     final googleAcc = await googleSignIn.signIn();
-    if (googleAcc == null) {
-      return;
-    }
+    if (googleAcc == null) {}
     _user = googleAcc;
-    final googleAuth = await googleAcc.authentication;
+    final googleAuth = await googleAcc!.authentication;
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    await FirebaseAuth.instance.signInWithCredential(credential);
+    final response =
+        await FirebaseAuth.instance.signInWithCredential(credential);
+    try {
+      return left(response);
+    } catch (e) {
+      return right(Failure(message: e.toString()));
+    }
   }
 }

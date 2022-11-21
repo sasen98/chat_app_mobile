@@ -89,8 +89,12 @@ class LoginScreen extends StatelessWidget {
                             },
                             child: const Text('Login'),
                           ),
+                    SizedBox(
+                      height: 10.h,
+                    ),
                     InkWell(
-                        onTap: () => AuthRepo().googleSignin(),
+                        onTap: () => BlocProvider.of<AuthBloc>(context)
+                            .add(AuthGoogleSignInEvent()),
                         child: const FaIcon(FontAwesomeIcons.google)),
                   ],
                 ),
