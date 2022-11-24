@@ -34,7 +34,6 @@ class AuthRepo {
   Future<void> signOut() async {
     await googleSignIn.disconnect();
     await _firebaseAuth.signOut();
-
   }
 
 // google signin
