@@ -9,12 +9,14 @@ class AuthRepo {
 
   Future<Either<UserCredential, Failure>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
-    final response = await _firebaseAuth.signInWithEmailAndPassword(
-        email: email, password: password);
     try {
+      final response = await _firebaseAuth.signInWithEmailAndPassword(
+          email: email, password: password);
       return left(
         response,
       );
+    } on FirebaseAuthException catch (e) {
+      return right(Failure(message: e.toString()));
     } catch (e) {
       return right(Failure(message: e.toString()));
     }

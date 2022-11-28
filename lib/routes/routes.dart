@@ -6,4 +6,5 @@ class Routes {
   static const String settingsScreenRoute = '/settings-screen';
   static const String chatScreenRoute = '/chat-screen';
   static const String chatListScreenRoute = '/chat-list-screen';
+  static const String demoScreenRoute = '/demo-screen';
 }

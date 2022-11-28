@@ -3,6 +3,7 @@ import 'package:chat_app/auth/screen/signup_screen.dart';
 import 'package:chat_app/chat/screens/chat_contact_list.dart';
 import 'package:chat_app/chat/screens/chat_screen.dart';
 import 'package:chat_app/default_screen/default_screen.dart';
+import 'package:chat_app/demo/demo.dart';
 import 'package:chat_app/home/home_screen.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/settings/settings_screen.dart';
@@ -24,6 +25,9 @@ class RouteGenerator {
       case Routes.chatListScreenRoute:
         return MaterialPageRoute(
             builder: (context) => const ChatContactListScreen());
+
+      case Routes.demoScreenRoute:
+        return MaterialPageRoute(builder: (context) => const Demo());
       case Routes.chatScreenRoute:
         return MaterialPageRoute(
             builder: (context) => ChatScreen(
