@@ -1,7 +1,9 @@
-import 'package:chat_app/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
+import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
+import 'package:chat_app/services/shared_prefs_services.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:chat_app/widgets/screen_padding_widget.dart';
@@ -15,6 +17,8 @@ class SignUpScreen extends StatelessWidget {
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   final _confirmPassCtrl = TextEditingController();
+  final _nameCtrl = TextEditingController();
+
   void _onSubmit(
       {required String email,
       required String password,
@@ -27,19 +31,31 @@ class SignUpScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    UserModel userModel = UserModel();
+
     return Scaffold(
       body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state.authStatus == AuthStatus.success) {
-            showSnackBar(
-                type: SnackBarType.success,
-                message: 'SignUp Successfully',
-                ctx: context);
-            locator
-                .get<NavigationService>()
-                .pushNamedAndRemoveUntil(Routes.loginScreenRoute, false);
+            BlocProvider.of<AuthBloc>(context)
+                .add(StoreInDataBaseEvent(userModel: userModel));
+            if (state.dataBaseStatus == DataBaseStatus.success) {
+              showSnackBar(
+                  type: SnackBarType.error,
+                  message: state.message ?? 'Signed up Successfully',
+                  ctx: context);
+              locator<SharedPrefsServices>()
+                  .setInt(key: 'token', value: state.user!.token!);
+              locator<NavigationService>()
+                  .pushReplacementNamed(Routes.homeScreenRoute);
+            } else {
+              showSnackBar(
+                  type: SnackBarType.error,
+                  message: state.message ?? 'Sign up Failed',
+                  ctx: context);
+            }
           }
-          if (state.authStatus == AuthStatus.success) {
+          if (state.authStatus == AuthStatus.failed) {
             showSnackBar(
                 type: SnackBarType.error,
                 message: state.message ?? 'Sign up Failed',
@@ -54,6 +70,10 @@ class SignUpScreen extends StatelessWidget {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
+                    CustomTextFielWidget(
+                      hintText: 'Enter your Name',
+                      controller: _nameCtrl,
+                    ),
                     CustomTextFielWidget(
                       hintText: 'Enter your email address',
                       controller: _emailCtrl,
@@ -71,6 +91,10 @@ class SignUpScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     ElevatedButton(
                         onPressed: () {
+                          userModel = UserModel(
+                            email: _emailCtrl.text,
+                            name: _nameCtrl.text,
+                          );
                           _onSubmit(
                               email: _emailCtrl.text,
                               password: _passCtrl.text,

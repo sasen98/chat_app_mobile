@@ -1,4 +1,6 @@
+import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/repo_response/repo_response.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -6,6 +8,10 @@ import 'package:google_sign_in/google_sign_in.dart';
 class AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
   User? get getCurrentUser => _firebaseAuth.currentUser;
+
+  /// object [fireStoreUser] : refers to user in firebase firestore
+  CollectionReference fireStoreUser =
+      FirebaseFirestore.instance.collection('users');
 
   Future<Either<UserCredential, Failure>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
@@ -22,12 +28,30 @@ class AuthRepo {
     }
   }
 
-  Future<Either<UserCredential, Failure>> signUpWithLoginAndPassword(
+  Future<Either<UserCredential, Failure>> signUpWithLoginAndPasswordFirebase(
       {required String email, required String password}) async {
     final response = await _firebaseAuth.createUserWithEmailAndPassword(
         email: email, password: password);
     try {
       return left(response);
+    } on FirebaseAuthException catch (e) {
+      return right(Failure(message: e.toString()));
+    } catch (e) {
+      return right(Failure(message: e.toString()));
+    }
+  }
+
+  Future<Either<UserModel, Failure>> storeInDatabase(
+      {required UserModel userModel}) async {
+    try {
+      FirebaseFirestore.instance.collection('users').doc(userModel.uId).set({
+        'id': userModel.uId,
+        'first_name': userModel.name,
+        'email': userModel.email,
+      });
+      return left(userModel);
+    } on FirebaseAuthException catch (e) {
+      return right(Failure(message: e.toString()));
     } catch (e) {
       return right(Failure(message: e.toString()));
     }

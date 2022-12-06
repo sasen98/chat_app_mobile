@@ -12,10 +12,13 @@ environment:
 
 dependencies:
   #firebase
-  cloud_firestore: ^4.0.4
   firebase_core: ^2.1.1
   firebase_auth: ^4.1.1
   google_sign_in: ^5.4.2
+  cloud_firestore: ^4.1.0
+
+  #shared preference 
+  shared_preferences: ^2.0.15
 
   #icons
   font_awesome_flutter: ^10.2.1

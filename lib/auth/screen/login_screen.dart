@@ -1,5 +1,4 @@
-import 'package:chat_app/auth/bloc/auth_bloc.dart';
-import 'package:chat_app/auth/repo/auth_repo.dart';
+import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';

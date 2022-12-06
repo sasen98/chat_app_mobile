@@ -1,8 +1,10 @@
-import 'package:chat_app/auth/bloc/auth_bloc.dart';
+import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
+import 'package:chat_app/constants/app_constants.dart';
 import 'package:chat_app/routes/route_generator.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
+import 'package:chat_app/services/shared_prefs_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -33,13 +35,14 @@ class MyApp extends StatelessWidget {
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           title: 'Flutter Demo',
-          theme: ThemeData( 
+          theme: ThemeData(
             primarySwatch: Colors.blue,
           ),
           onGenerateRoute: RouteGenerator.generateRoute,
-          initialRoute: Routes.loginScreenRoute,
+          initialRoute: AppConstants.token != null
+              ? Routes.homeScreenRoute
+              : Routes.loginScreenRoute,
           navigatorKey: NavigationService.navigatorKey,
-
         ),
       ),
     );

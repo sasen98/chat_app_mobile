@@ -2,20 +2,29 @@ part of 'auth_bloc.dart';
 
 enum AuthStatus { initial, loading, success, failed }
 
+enum DataBaseStatus { initial, loading, success, failed }
+
 class AuthState extends Equatable {
   const AuthState({
     required this.authStatus,
+    required this.dataBaseStatus,
     required this.user,
     this.message,
   });
-  final UserCredential? user;
+  final UserModel? user;
   final AuthStatus authStatus;
+  final DataBaseStatus dataBaseStatus;
   final String? message;
-  AuthState copyWith(
-      {UserCredential? user, AuthStatus? authStatus, String? message}) {
+  AuthState copyWith({
+    UserModel? user,
+    AuthStatus? authStatus,
+    DataBaseStatus? dataBaseStatus,
+    String? message,
+  }) {
     return AuthState(
         user: user ?? this.user,
         authStatus: authStatus ?? this.authStatus,
+        dataBaseStatus: dataBaseStatus ?? this.dataBaseStatus,
         message: message ?? this.message);
   }
 
@@ -32,5 +41,6 @@ class AuthInitial extends AuthState {
       : super(
           user: null,
           authStatus: AuthStatus.initial,
+          dataBaseStatus: DataBaseStatus.initial,
         );
 }
