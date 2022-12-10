@@ -2,6 +2,7 @@ import 'package:chat_app/auth/repo/auth_repo.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
+import 'package:chat_app/services/shared_prefs_services.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -28,6 +29,7 @@ class CustomAppbarWidget extends StatelessWidget with PreferredSizeWidget {
             ? IconButton(
                 onPressed: () {
                   AuthRepo().signOut();
+                  locator<SharedPrefsServices>().clearSharedPrefsData();
                   locator<NavigationService>()
                       .pushNamedAndRemoveUntil(Routes.loginScreenRoute, false);
                 },

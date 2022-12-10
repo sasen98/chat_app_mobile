@@ -1,7 +1,9 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
+import 'package:chat_app/constants/auth_constants.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
+import 'package:chat_app/widgets/animated_button.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:chat_app/widgets/screen_padding_widget.dart';
@@ -36,6 +38,8 @@ class LoginScreen extends StatelessWidget {
                 type: SnackBarType.success,
                 message: 'Logged In Successfully',
                 ctx: context);
+
+            storeValue(key: SharedPrefsKey.authKey, value: state.user.token!);
             locator
                 .get<NavigationService>()
                 .pushNamedAndRemoveUntil(Routes.homeScreenRoute, false);
@@ -73,21 +77,12 @@ class LoginScreen extends StatelessWidget {
                         },
                         child: const Text('SignUp Instead?')),
                     SizedBox(height: 10.h),
-                    state.authStatus == AuthStatus.loading
-                        ? SizedBox(
-                            height: 20.h,
-                            width: 20.w,
-                            child: const CircularProgressIndicator())
-                        : ElevatedButton(
-                            onPressed: () {
-                              _onSubmit(
-                                context: context,
+                    AnimatedButton(
+                        buttonTitle: 'Login',
+                        onTap: () => BlocProvider.of<AuthBloc>(context).add(
+                            AuthLoginEvent(
                                 email: _emailCtrl.text,
-                                password: _passCtrl.text,
-                              );
-                            },
-                            child: const Text('Login'),
-                          ),
+                                password: _passCtrl.text))),
                     SizedBox(
                       height: 10.h,
                     ),

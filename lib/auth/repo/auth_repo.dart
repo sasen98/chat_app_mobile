@@ -13,14 +13,18 @@ class AuthRepo {
   CollectionReference fireStoreUser =
       FirebaseFirestore.instance.collection('users');
 
-  Future<Either<UserCredential, Failure>> loginWithEmailAndPassword(
+//Either<dynamic, Failure>
+  Future<Either<dynamic, Failure>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
       final response = await _firebaseAuth.signInWithEmailAndPassword(
           email: email, password: password);
-      return left(
-        response,
-      );
+      String? token;
+      if (response.user != null) {
+        token = await response.user?.getIdToken();
+      }
+      return left({"token": token, "user_credentials": response});
+      //return left(response);
     } on FirebaseAuthException catch (e) {
       return right(Failure(message: e.toString()));
     } catch (e) {
@@ -28,12 +32,16 @@ class AuthRepo {
     }
   }
 
-  Future<Either<UserCredential, Failure>> signUpWithLoginAndPasswordFirebase(
+  Future<Either<dynamic, Failure>> signUpWithLoginAndPasswordFirebase(
       {required String email, required String password}) async {
-    final response = await _firebaseAuth.createUserWithEmailAndPassword(
-        email: email, password: password);
     try {
-      return left(response);
+      final response = await _firebaseAuth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      String? token;
+      if (response.user != null) {
+        token = await response.user?.getIdToken();
+      }
+      return left({"token": token, "user_credentials": response});
     } on FirebaseAuthException catch (e) {
       return right(Failure(message: e.toString()));
     } catch (e) {
@@ -66,17 +74,22 @@ class AuthRepo {
   final googleSignIn = GoogleSignIn();
   GoogleSignInAccount? _user;
   GoogleSignInAccount get user => _user!;
-  Future<Either<UserCredential, Failure>> googleSignin() async {
+  Future<Either<dynamic, Failure>> googleSignin() async {
     final googleAcc = await googleSignIn.signIn();
     if (googleAcc == null) {}
     _user = googleAcc;
     final googleAuth = await googleAcc!.authentication;
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
-    final response =
-        await FirebaseAuth.instance.signInWithCredential(credential);
     try {
-      return left(response);
+      final response =
+          await FirebaseAuth.instance.signInWithCredential(credential);
+
+      String? token;
+      if (response.user != null) {
+        token = await response.user?.getIdToken();
+      }
+      return left({"token": token, "user_credentials": response});
     } catch (e) {
       return right(Failure(message: e.toString()));
     }

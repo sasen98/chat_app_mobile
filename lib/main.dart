@@ -1,5 +1,5 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
-import 'package:chat_app/constants/app_constants.dart';
+import 'package:chat_app/constants/auth_constants.dart';
 import 'package:chat_app/routes/route_generator.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
@@ -14,6 +14,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setUpLpcator();
   await Firebase.initializeApp();
+  // SharedPrefsServices().init();
   runApp(const MyApp());
 }
 
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
             primarySwatch: Colors.blue,
           ),
           onGenerateRoute: RouteGenerator.generateRoute,
-          initialRoute: AppConstants.token != null
+          initialRoute: getValue(key: SharedPrefsKey.authKey) != null
               ? Routes.homeScreenRoute
               : Routes.loginScreenRoute,
           navigatorKey: NavigationService.navigatorKey,

@@ -11,7 +11,7 @@ class AuthState extends Equatable {
     required this.user,
     this.message,
   });
-  final UserModel? user;
+  final UserModel user;
   final AuthStatus authStatus;
   final DataBaseStatus dataBaseStatus;
   final String? message;
@@ -37,9 +37,9 @@ class AuthState extends Equatable {
 }
 
 class AuthInitial extends AuthState {
-  const AuthInitial()
+  AuthInitial()
       : super(
-          user: null,
+          user: UserModel(email: '', name: '', token: '', uId: ''),
           authStatus: AuthStatus.initial,
           dataBaseStatus: DataBaseStatus.initial,
         );

@@ -8,7 +8,7 @@ class UserModel {
   String? name;
   String? email;
   String? uId;
-  int? token;
+  String? token;
 
   UserModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];

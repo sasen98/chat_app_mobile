@@ -4,10 +4,10 @@ import 'package:flutter/foundation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefsServices {
-  SharedPreferences? sharedPreferences;
   SharedPrefsServices() {
     init();
   }
+  SharedPreferences? sharedPreferences;
 
   ///FUNC [init] : Initialize shared prefs
   Future<void> init() async {

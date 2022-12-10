@@ -1,9 +1,9 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/auth/model/user_model.dart';
+import 'package:chat_app/constants/auth_constants.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
-import 'package:chat_app/services/shared_prefs_services.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
 import 'package:chat_app/widgets/screen_padding_widget.dart';
@@ -44,8 +44,7 @@ class SignUpScreen extends StatelessWidget {
                   type: SnackBarType.error,
                   message: state.message ?? 'Signed up Successfully',
                   ctx: context);
-              locator<SharedPrefsServices>()
-                  .setInt(key: 'token', value: state.user!.token!);
+              storeValue(key: SharedPrefsKey.authKey, value: state.user.token!);
               locator<NavigationService>()
                   .pushReplacementNamed(Routes.homeScreenRoute);
             } else {
@@ -74,17 +73,20 @@ class SignUpScreen extends StatelessWidget {
                       hintText: 'Enter your Name',
                       controller: _nameCtrl,
                     ),
+                    SizedBox(height: 10.h),
                     CustomTextFielWidget(
                       hintText: 'Enter your email address',
                       controller: _emailCtrl,
                     ),
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
+                      isPassword: true,
                       hintText: 'Enter your passwrord',
                       controller: _passCtrl,
                     ),
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
+                      isPassword: true,
                       hintText: 'Confirm password',
                       controller: _confirmPassCtrl,
                     ),
