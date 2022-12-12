@@ -18,7 +18,7 @@ class RouteGenerator {
       case Routes.signUpScreenRoute:
         return MaterialPageRoute(builder: (context) => SignUpScreen());
       case Routes.homeScreenRoute:
-        return MaterialPageRoute(builder: (context) => const HomeScreen());
+        return MaterialPageRoute(builder: (context) => HomeScreen());
       case Routes.settingsScreenRoute:
         return MaterialPageRoute(builder: (context) => const SettingsScreen());
       case Routes.chatListScreenRoute:

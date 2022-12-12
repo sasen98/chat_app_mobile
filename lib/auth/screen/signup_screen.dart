@@ -26,6 +26,7 @@ class SignUpScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(ctx)
           .add(AuthSignUpEvent(email: email, password: password));
+      locator<NavigationService>().pushReplacementNamed(Routes.loginScreenRoute);
     }
   }
 

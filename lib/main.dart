@@ -2,6 +2,7 @@ import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/constants/auth_constants.dart';
 import 'package:chat_app/routes/route_generator.dart';
 import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/demo_services.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/services/shared_prefs_services.dart';
@@ -15,6 +16,7 @@ Future<void> main() async {
   setUpLpcator();
   await Firebase.initializeApp();
   // SharedPrefsServices().init();
+  DemoServices().initValue();
   runApp(const MyApp());
 }
 
