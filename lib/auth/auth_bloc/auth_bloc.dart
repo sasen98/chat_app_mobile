@@ -1,6 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/auth/repo/auth_repo.dart';
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
@@ -103,6 +104,30 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         });
       }
     });
+    on<AuthFacebookSignInEvent>(
+      (event, emit) async {
+        emit(state.copyWith(authStatus: AuthStatus.loading));
+        final response = await AuthRepo().signInWithFacebook();
+        if (response.isLeft()) {
+          response.leftMap((l) async {
+            UserModel? user = _mapDecoder(l: l);
+            emit(state.copyWith(
+              authStatus: AuthStatus.success,
+              user: UserModel(
+                  name: user?.name,
+                  email: user?.email,
+                  uId: user?.uId,
+                  token: user?.token),
+            ));
+          });
+        } else {
+          response.fold((l) => {}, (r) {
+            emit(state.copyWith(
+                authStatus: AuthStatus.failed, message: r.message));
+          });
+        }
+      },
+    );
   }
   UserModel? _mapDecoder({required Map l}) {
     UserModel? userModel;
@@ -122,7 +147,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           name: userCredential.user!.displayName,
           token: token,
           uId: userCredential.user!.uid);
-      return userModel;
     }
+    return userModel;
   }
 }

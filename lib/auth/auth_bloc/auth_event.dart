@@ -21,6 +21,8 @@ class AuthSignUpEvent extends AuthEvent {
 
 class AuthGoogleSignInEvent extends AuthEvent {}
 
+class AuthFacebookSignInEvent extends AuthEvent {}
+
 class StoreInDataBaseEvent extends AuthEvent {
   const StoreInDataBaseEvent({required this.userModel});
   final UserModel userModel;

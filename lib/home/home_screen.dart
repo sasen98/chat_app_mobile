@@ -1,8 +1,7 @@
+import 'package:chat_app/demo/slider_creen.dart';
 import 'package:chat_app/routes/routes.dart';
-import 'package:chat_app/services/demo_services.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
-import 'package:chat_app/widgets/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -56,7 +55,12 @@ class HomeScreen extends StatelessWidget {
               child: Column(
                 children: [
                   const Text('Welcome to the app'),
-                  Text(locator<DemoServices>().returnData()),
+                  ElevatedButton(
+                    onPressed: () {
+                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SliderScreen()));
+                    },
+                    child: Text('Sliders'),
+                  ),
                   ElevatedButton(
                     onPressed: () {
                       locator<NavigationService>()

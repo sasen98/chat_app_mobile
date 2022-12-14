@@ -2,7 +2,6 @@ import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/constants/auth_constants.dart';
 import 'package:chat_app/routes/route_generator.dart';
 import 'package:chat_app/routes/routes.dart';
-import 'package:chat_app/services/demo_services.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/services/shared_prefs_services.dart';
@@ -15,15 +14,14 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   setUpLpcator();
   await Firebase.initializeApp();
-  // SharedPrefsServices().init();
-  DemoServices().initValue();
+  locator<SharedPrefsServices>().init();
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  @override
+  @override 
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       designSize: const Size(390, 844),

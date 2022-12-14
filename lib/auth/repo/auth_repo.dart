@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_facebook_auth/flutter_facebook_auth.dart';
 
 class AuthRepo {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
@@ -17,8 +18,8 @@ class AuthRepo {
   Future<Either<dynamic, Failure>> loginWithEmailAndPassword(
       {required String email, required String password}) async {
     try {
-      final response = await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: password);
+      final UserCredential response = await _firebaseAuth
+          .signInWithEmailAndPassword(email: email, password: password);
       String? token;
       if (response.user != null) {
         token = await response.user?.getIdToken();
@@ -35,8 +36,8 @@ class AuthRepo {
   Future<Either<dynamic, Failure>> signUpWithLoginAndPasswordFirebase(
       {required String email, required String password}) async {
     try {
-      final response = await _firebaseAuth.createUserWithEmailAndPassword(
-          email: email, password: password);
+      final UserCredential response = await _firebaseAuth
+          .createUserWithEmailAndPassword(email: email, password: password);
       String? token;
       if (response.user != null) {
         token = await response.user?.getIdToken();
@@ -82,9 +83,27 @@ class AuthRepo {
     final credential = GoogleAuthProvider.credential(
         accessToken: googleAuth.accessToken, idToken: googleAuth.idToken);
     try {
-      final response =
+      final UserCredential response =
           await FirebaseAuth.instance.signInWithCredential(credential);
 
+      String? token;
+      if (response.user != null) {
+        token = await response.user?.getIdToken();
+      }
+      return left({"token": token, "user_credentials": response});
+    } catch (e) {
+      return right(Failure(message: e.toString()));
+    }
+  }
+
+  //facebook signin
+  Future<Either<dynamic, Failure>> signInWithFacebook() async {
+    try {
+      final LoginResult loginResult = await FacebookAuth.instance.login();
+      final OAuthCredential facebookAuthCredential =
+          FacebookAuthProvider.credential(loginResult.accessToken!.token);
+      final UserCredential response = await FirebaseAuth.instance
+          .signInWithCredential(facebookAuthCredential);
       String? token;
       if (response.user != null) {
         token = await response.user?.getIdToken();

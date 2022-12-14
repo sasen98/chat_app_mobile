@@ -83,13 +83,24 @@ class LoginScreen extends StatelessWidget {
                             AuthLoginEvent(
                                 email: _emailCtrl.text,
                                 password: _passCtrl.text))),
-                    SizedBox(
-                      height: 10.h,
-                    ),
-                    InkWell(
-                        onTap: () => BlocProvider.of<AuthBloc>(context)
-                            .add(AuthGoogleSignInEvent()),
-                        child: const FaIcon(FontAwesomeIcons.google)),
+                    SizedBox(height: 20.h),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        InkWell(
+                            onTap: () => BlocProvider.of<AuthBloc>(context)
+                                .add(AuthGoogleSignInEvent()),
+                            child: const FaIcon(FontAwesomeIcons.google)),
+                        SizedBox(width: 20.w),
+                        InkWell(
+                            onTap: () => BlocProvider.of<AuthBloc>(context)
+                                .add(AuthFacebookSignInEvent ()),
+                            child: const FaIcon(
+                              FontAwesomeIcons.facebook,
+                              color: Colors.blue,
+                            )),
+                      ],
+                    )
                   ],
                 ),
               ),
