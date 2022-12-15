@@ -93,12 +93,13 @@ class LoginScreen extends StatelessWidget {
                             child: const FaIcon(FontAwesomeIcons.google)),
                         SizedBox(width: 20.w),
                         InkWell(
-                            onTap: () => BlocProvider.of<AuthBloc>(context)
-                                .add(AuthFacebookSignInEvent ()),
-                            child: const FaIcon(
-                              FontAwesomeIcons.facebook,
-                              color: Colors.blue,
-                            )),
+                          onTap: () => BlocProvider.of<AuthBloc>(context)
+                              .add(AuthFacebookSignInEvent()),
+                          child: const FaIcon(
+                            FontAwesomeIcons.facebook,
+                            color: Colors.blue,
+                          ),
+                        ),
                       ],
                     )
                   ],
