@@ -1,5 +1,6 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/constants/auth_constants.dart';
+import 'package:chat_app/custom_extension/validation_extension.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
@@ -14,15 +15,16 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({Key? key}) : super(key: key);
-  final _emailCtrl = TextEditingController();
-  final _passCtrl = TextEditingController();
-  final _formlKey = GlobalKey<FormState>();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _passCtrl = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _onSubmit(
       {required String email,
       required String password,
       required BuildContext context}) {
-    if (_formlKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate()) {
+      print('valid');
       BlocProvider.of<AuthBloc>(context)
           .add(AuthLoginEvent(email: email, password: password));
     }
@@ -54,17 +56,27 @@ class LoginScreen extends StatelessWidget {
         builder: (context, state) {
           return ScreenPadding(
             child: Form(
-              key: _formlKey,
+              key: _formKey,
               child: Center(
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     CustomTextFielWidget(
+                        validator: (val) {
+                          if (!val.isValidEmail) {
+                            return 'Invalid Email';
+                          }
+                        },
                         hintText: 'Email Id',
                         controller: _emailCtrl,
                         keyboardType: TextInputType.name),
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
+                        validator: (val) {
+                          if (!val.isValidPassword) {
+                            return 'Invalid Password';
+                          }
+                        },
                         controller: _passCtrl,
                         isPassword: true,
                         hintText: 'Password',
@@ -79,10 +91,10 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     AnimatedButton(
                         buttonTitle: 'Login',
-                        onTap: () => BlocProvider.of<AuthBloc>(context).add(
-                            AuthLoginEvent(
-                                email: _emailCtrl.text,
-                                password: _passCtrl.text))),
+                        onTap: () => _onSubmit(
+                            context: context,
+                            email: _emailCtrl.text,
+                            password: _passCtrl.text)),
                     SizedBox(height: 20.h),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,

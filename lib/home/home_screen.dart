@@ -23,7 +23,7 @@ class HomeScreen extends StatelessWidget {
                 _scaffoldKey.currentState!.openEndDrawer();
               }
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
             ),
           )
@@ -42,35 +42,37 @@ class HomeScreen extends StatelessWidget {
           }
         },
         child: Scaffold(
-            key: _scaffoldKey,
-            drawer: Drawer(
-              child: Text('Drawer'),
+          key: _scaffoldKey,
+          drawer: Drawer(
+            child: Text('Drawer'),
+          ),
+          endDrawer: Drawer(
+            width: 0.8.sw,
+            backgroundColor: Colors.red,
+            child: Text('EndDrawer'),
+          ),
+          body: Center(
+            child: Column(
+              children: [
+                const Text('Welcome to the app'),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => SliderScreen()));
+                  },
+                  child: Text('Sliders'),
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    locator<NavigationService>()
+                        .navigateTo(Routes.chatListScreenRoute);
+                  },
+                  child: const Text('Start Chat'),
+                ),
+              ],
             ),
-            endDrawer: Drawer(
-              width: 0.8.sw,
-              backgroundColor: Colors.red,
-              child: Text('EndDrawer'),
-            ),
-            body: Center(
-              child: Column(
-                children: [
-                  const Text('Welcome to the app'),
-                  ElevatedButton(
-                    onPressed: () {
-                     Navigator.of(context).push(MaterialPageRoute(builder: (context)=>SliderScreen()));
-                    },
-                    child: Text('Sliders'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      locator<NavigationService>()
-                          .navigateTo(Routes.chatListScreenRoute);
-                    },
-                    child: const Text('Start Chat'),
-                  ),
-                ],
-              ),
-            )),
+          ),
+        ),
       ),
     );
   }

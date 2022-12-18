@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomTextFielWidget extends StatelessWidget {
@@ -15,6 +16,8 @@ class CustomTextFielWidget extends StatelessWidget {
   final bool enabled;
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final TextInputAction? textInputAction;
+  final List<TextInputFormatter>? inputFormatters;
 
   const CustomTextFielWidget({
     Key? key,
@@ -31,6 +34,8 @@ class CustomTextFielWidget extends StatelessWidget {
     this.enabled = true,
     this.onChanged,
     this.controller,
+    this.textInputAction,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -41,6 +46,8 @@ class CustomTextFielWidget extends StatelessWidget {
         valueListenable: obscureText,
         builder: (context, obscure, _) {
           return TextFormField(
+            inputFormatters: inputFormatters,
+            textInputAction: textInputAction,
             controller: controller,
             keyboardType: keyboardType,
             obscureText: obscure,
