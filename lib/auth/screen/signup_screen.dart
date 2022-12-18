@@ -1,6 +1,7 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/constants/auth_constants.dart';
+import 'package:chat_app/custom_extension/validation_extension.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
@@ -13,11 +14,11 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class SignUpScreen extends StatelessWidget {
   SignUpScreen({super.key});
-  final _formKey = GlobalKey<FormState>();
-  final _emailCtrl = TextEditingController();
-  final _passCtrl = TextEditingController();
-  final _confirmPassCtrl = TextEditingController();
-  final _nameCtrl = TextEditingController();
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  final TextEditingController _emailCtrl = TextEditingController();
+  final TextEditingController _passCtrl = TextEditingController();
+  final TextEditingController _confirmPassCtrl = TextEditingController();
+  final TextEditingController _nameCtrl = TextEditingController();
 
   void _onSubmit(
       {required String email,
@@ -26,7 +27,8 @@ class SignUpScreen extends StatelessWidget {
     if (_formKey.currentState!.validate()) {
       BlocProvider.of<AuthBloc>(ctx)
           .add(AuthSignUpEvent(email: email, password: password));
-      locator<NavigationService>().pushReplacementNamed(Routes.loginScreenRoute);
+      locator<NavigationService>()
+          .pushReplacementNamed(Routes.loginScreenRoute);
     }
   }
 
@@ -71,6 +73,11 @@ class SignUpScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     CustomTextFielWidget(
+                      validator: (val) {
+                        if (!val.isValidName) {
+                          return 'Invalid Input';
+                        }
+                      },
                       hintText: 'Enter your Name',
                       controller: _nameCtrl,
                     ),
@@ -78,15 +85,29 @@ class SignUpScreen extends StatelessWidget {
                     CustomTextFielWidget(
                       hintText: 'Enter your email address',
                       controller: _emailCtrl,
+                      validator: (val) {
+                        if (!val.isValidEmail) {
+                          return 'Invalid Email';
+                        }
+                      },
                     ),
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
                       isPassword: true,
                       hintText: 'Enter your passwrord',
+                      validator: (val) {
+                        if (!val.isValidPassword) {
+                          return 'Invalid Password';
+                        }
+                      },
                       controller: _passCtrl,
                     ),
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
+                      validator: (val) =>
+                          InputValidator.validateConfirmPassword(
+                              confirmPassword: _confirmPassCtrl.text,
+                              password: _passCtrl.text),
                       isPassword: true,
                       hintText: 'Confirm password',
                       controller: _confirmPassCtrl,
