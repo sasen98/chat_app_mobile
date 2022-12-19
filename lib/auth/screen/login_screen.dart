@@ -32,102 +32,114 @@ class _LoginScreenState extends State<LoginScreen> {
       required String password,
       required BuildContext context}) {
     if (_formKey.currentState!.validate()) {
-      print('valid');
       BlocProvider.of<AuthBloc>(context)
           .add(AuthLoginEvent(email: email, password: password));
     }
   }
 
+  DateTime? currentBackPressTime;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocConsumer<AuthBloc, AuthState>(
-        listener: (context, state) {
-          if (state.authStatus == AuthStatus.success) {
-            showSnackBar(
-                type: SnackBarType.success,
-                message: 'Logged In Successfully',
-                ctx: context);
-
-            storeValue(key: SharedPrefsKey.authKey, value: state.user.token!);
-            locator
-                .get<NavigationService>()
-                .pushNamedAndRemoveUntil(Routes.homeScreenRoute, false);
+      body: WillPopScope(
+        onWillPop: () {
+          DateTime now = DateTime.now();
+          if (currentBackPressTime == null ||
+              now.difference(currentBackPressTime!) >
+                  const Duration(seconds: 2)) {
+            currentBackPressTime = now;
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text('Press back again to Exit')));
+            return Future.value(false);
           }
-          if (state.authStatus == AuthStatus.failed) {
-            showSnackBar(
-                type: SnackBarType.error,
-                message: state.message ?? 'Failed to login',
-                ctx: context);
-          }
+          return Future.value(true);
         },
-        builder: (context, state) {
-          return ScreenPadding(
-            child: Form(
-              key: _formKey,
-              child: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    CustomTextFielWidget(
-                        validator: (val) {
-                          if (!val.isValidEmail) {
-                            return 'Invalid Email';
-                          }
-                        },
-                        hintText: 'Email Id',
-                        controller: _emailCtrl,
-                        keyboardType: TextInputType.name),
-                    SizedBox(height: 10.h),
-                    CustomTextFielWidget(
-                        validator: (val) {
-                          if (val == null) {
-                            return 'Invalid Password';
-                          }
-                        },
-                        controller: _passCtrl,
-                        isPassword: true,
-                        hintText: 'Password',
-                        keyboardType: TextInputType.visiblePassword),
-                    SizedBox(height: 10.h),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushNamed(Routes.signUpScreenRoute);
-                        },
-                        child: const Text('SignUp Instead?')),
-                    SizedBox(height: 10.h),
-                    AnimatedButton(
-                        buttonTitle: 'Login',
-                        onTap: () => _onSubmit(
-                            context: context,
-                            email: _emailCtrl.text,
-                            password: _passCtrl.text)),
-                    SizedBox(height: 20.h),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        InkWell(
+        child: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state.authStatus == AuthStatus.success) {
+              showSnackBar(
+                  type: SnackBarType.success,
+                  message: 'Logged In Successfully',
+                  ctx: context);
+
+              storeValue(key: SharedPrefsKey.authKey, value: state.user.token!);
+              locator
+                  .get<NavigationService>()
+                  .pushNamedAndRemoveUntil(Routes.homeScreenRoute, false);
+            }
+            if (state.authStatus == AuthStatus.failed) {
+              showSnackBar(
+                  type: SnackBarType.error,
+                  message: state.message ?? 'Failed to login',
+                  ctx: context);
+            }
+          },
+          builder: (context, state) {
+            return ScreenPadding(
+              child: Form(
+                key: _formKey,
+                child: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      CustomTextFielWidget(
+                          validator: (val) {
+                            if (!val.isValidEmail) {
+                              return 'Invalid Email';
+                            }
+                          },
+                          hintText: 'Email Id',
+                          controller: _emailCtrl,
+                          keyboardType: TextInputType.name),
+                      SizedBox(height: 10.h),
+                      CustomTextFielWidget(
+                          validator: (val) {
+                            if (val == null) {
+                              return 'Invalid Password';
+                            }
+                          },
+                          controller: _passCtrl,
+                          isPassword: true,
+                          hintText: 'Password',
+                          keyboardType: TextInputType.visiblePassword),
+                      SizedBox(height: 10.h),
+                      TextButton(
+                          onPressed: () => locator<NavigationService>()
+                              .pushReplacementNamed(Routes.signUpScreenRoute),
+                          child: const Text('SignUp Instead?')),
+                      SizedBox(height: 10.h),
+                      AnimatedButton(
+                          buttonTitle: 'Login',
+                          onTap: () => _onSubmit(
+                              context: context,
+                              email: _emailCtrl.text,
+                              password: _passCtrl.text)),
+                      SizedBox(height: 20.h),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                              onTap: () => BlocProvider.of<AuthBloc>(context)
+                                  .add(AuthGoogleSignInEvent()),
+                              child: const FaIcon(FontAwesomeIcons.google)),
+                          SizedBox(width: 20.w),
+                          InkWell(
                             onTap: () => BlocProvider.of<AuthBloc>(context)
-                                .add(AuthGoogleSignInEvent()),
-                            child: const FaIcon(FontAwesomeIcons.google)),
-                        SizedBox(width: 20.w),
-                        InkWell(
-                          onTap: () => BlocProvider.of<AuthBloc>(context)
-                              .add(AuthFacebookSignInEvent()),
-                          child: const FaIcon(
-                            FontAwesomeIcons.facebook,
-                            color: Colors.blue,
+                                .add(AuthFacebookSignInEvent()),
+                            child: const FaIcon(
+                              FontAwesomeIcons.facebook,
+                              color: Colors.blue,
+                            ),
                           ),
-                        ),
-                      ],
-                    )
-                  ],
+                        ],
+                      )
+                    ],
+                  ),
                 ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

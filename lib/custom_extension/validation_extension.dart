@@ -26,24 +26,3 @@ extension Validation on String? {
   }
 }
 
-class InputValidator {
-  static String? validateConfirmPassword({
-    required String? password,
-    required String? confirmPassword,
-  }) {
-    if (confirmPassword == null || confirmPassword.isEmpty) {
-      return "This field is required";
-    }
-    // if (confirmPassword.length > 2 && confirmPassword.length < 8) {
-    //   return "Password should be the combination of uppercase and lowercase letter, number, special character and minimum length of 8";
-    // }
-    // if (!passwordReg.hasMatch(confirmPassword)) {
-    //   return 'Password should be the combination of uppercase and lowercase letter, number, special character and minimum length of 8';
-    // }
-    if (password != confirmPassword) {
-      return "Password and confirm password does not match";
-    }
-
-    return null;
-  }
-}
