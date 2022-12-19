@@ -13,10 +13,18 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
-class LoginScreen extends StatelessWidget {
-  LoginScreen({Key? key}) : super(key: key);
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({Key? key}) : super(key: key);
+
+  @override
+  State<LoginScreen> createState() => _LoginScreenState();
+}
+
+class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailCtrl = TextEditingController();
+
   final TextEditingController _passCtrl = TextEditingController();
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   void _onSubmit(
@@ -73,7 +81,7 @@ class LoginScreen extends StatelessWidget {
                     SizedBox(height: 10.h),
                     CustomTextFielWidget(
                         validator: (val) {
-                          if (!val.isValidPassword) {
+                          if (val == null) {
                             return 'Invalid Password';
                           }
                         },

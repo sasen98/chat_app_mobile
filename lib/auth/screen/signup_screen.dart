@@ -12,12 +12,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class SignUpScreen extends StatelessWidget {
-  SignUpScreen({super.key});
+class SignUpScreen extends StatefulWidget {
+  const SignUpScreen({super.key});
+
+  @override
+  State<SignUpScreen> createState() => _SignUpScreenState();
+}
+
+class _SignUpScreenState extends State<SignUpScreen> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+
   final TextEditingController _emailCtrl = TextEditingController();
+
   final TextEditingController _passCtrl = TextEditingController();
+
   final TextEditingController _confirmPassCtrl = TextEditingController();
+
   final TextEditingController _nameCtrl = TextEditingController();
 
   void _onSubmit(
