@@ -1,7 +1,6 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/constants/auth_constants.dart';
-import 'package:chat_app/custom_extension/validation_extension.dart';
 import 'package:chat_app/routes/routes.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
@@ -50,113 +49,98 @@ class _SignUpScreenState extends State<SignUpScreen> {
     UserModel userModel = UserModel();
 
     return Scaffold(
-      body: WillPopScope(
-        onWillPop: () {
-          DateTime now = DateTime.now();
-          if (currentBackPressTime == null ||
-              now.difference(currentBackPressTime!) >
-                  const Duration(seconds: 2)) {
-            currentBackPressTime = now;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Press back again to Exit')));
-            return Future.value(false);
-          }
-          return Future.value(true);
-        },
-        child: BlocConsumer<AuthBloc, AuthState>(
-          listener: (context, state) async {
-            if (state.authStatus == AuthStatus.success) {
-              BlocProvider.of<AuthBloc>(context)
-                  .add(StoreInDataBaseEvent(userModel: userModel));
-              if (state.dataBaseStatus == DataBaseStatus.success) {
-                showSnackBar(
-                    type: SnackBarType.error,
-                    message: state.message ?? 'Signed up Successfully',
-                    ctx: context);
-                storeValue(
-                    key: SharedPrefsKey.authKey, value: state.user.token!);
-                locator<NavigationService>()
-                    .pushReplacementNamed(Routes.homeScreenRoute);
-              } else {
-                showSnackBar(
-                    type: SnackBarType.error,
-                    message: state.message ?? 'Sign up Failed',
-                    ctx: context);
-              }
-            }
-            if (state.authStatus == AuthStatus.failed) {
+      body: BlocConsumer<AuthBloc, AuthState>(
+        listener: (context, state) async {
+          if (state.authStatus == AuthStatus.success) {
+            BlocProvider.of<AuthBloc>(context)
+                .add(StoreInDataBaseEvent(userModel: userModel));
+            if (state.dataBaseStatus == DataBaseStatus.success) {
+              showSnackBar(
+                  type: SnackBarType.error,
+                  message: state.message ?? 'Signed up Successfully',
+                  ctx: context);
+              storeValue(key: SharedPrefsKey.authKey, value: state.user.token!);
+              locator<NavigationService>()
+                  .pushReplacementNamed(Routes.homeScreenRoute);
+            } else {
               showSnackBar(
                   type: SnackBarType.error,
                   message: state.message ?? 'Sign up Failed',
                   ctx: context);
             }
-          },
-          builder: (context, state) {
-            return Center(
-              child: Form(
-                key: _formKey,
-                child: ScreenPadding(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      CustomTextFielWidget(
-                        validator: (val) => InputValidatorService.validateName(
-                            name: _nameCtrl.text),
-                        hintText: 'Enter your Name',
-                        controller: _nameCtrl,
-                      ),
-                      SizedBox(height: 10.h),
-                      CustomTextFielWidget(
-                        hintText: 'Enter your email address',
-                        controller: _emailCtrl,
-                        validator: (val) => InputValidatorService.validateEmail(
-                            email: _emailCtrl.text),
-                      ),
-                      SizedBox(height: 10.h),
-                      CustomTextFielWidget(
-                        isPassword: true,
-                        hintText: 'Enter your passwrord',
-                        validator: (val) =>
-                            InputValidatorService.validatePassword(
-                                password: _passCtrl.text),
-                        controller: _passCtrl,
-                      ),
-                      SizedBox(height: 10.h),
-                      CustomTextFielWidget(
-                        validator: (val) =>
-                            InputValidatorService.validateConfirmPassword(
-                                confirmPassword: _confirmPassCtrl.text,
-                                password: _passCtrl.text),
-                        isPassword: true,
-                        hintText: 'Confirm password',
-                        controller: _confirmPassCtrl,
-                      ),
-                      SizedBox(height: 10.h),
-                      TextButton(
-                          onPressed: () => locator<NavigationService>()
-                              .pushReplacementNamed(Routes.loginScreenRoute),
-                          child: const Text('Already have an Account?')),
-                      SizedBox(height: 10.h),
-                      AnimatedButton(
-                        buttonTitle: 'Sign Up',
-                        onTap: () {
-                          userModel = UserModel(
+          }
+          if (state.authStatus == AuthStatus.failed) {
+            showSnackBar(
+                type: SnackBarType.error,
+                message: state.message ?? 'Sign up Failed',
+                ctx: context);
+          }
+        },
+        builder: (context, state) {
+          return Center(
+            child: Form(
+              key: _formKey,
+              child: ScreenPadding(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomTextFielWidget(
+                      validator: (val) => InputValidatorService.validateName(
+                          name: _nameCtrl.text),
+                      hintText: 'Enter your Name',
+                      controller: _nameCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFielWidget(
+                      hintText: 'Enter your email address',
+                      controller: _emailCtrl,
+                      validator: (val) => InputValidatorService.validateEmail(
+                          email: _emailCtrl.text),
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFielWidget(
+                      isPassword: true,
+                      hintText: 'Enter your passwrord',
+                      validator: (val) =>
+                          InputValidatorService.validatePassword(
+                              password: _passCtrl.text),
+                      controller: _passCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    CustomTextFielWidget(
+                      validator: (val) =>
+                          InputValidatorService.validateConfirmPassword(
+                              confirmPassword: _confirmPassCtrl.text,
+                              password: _passCtrl.text),
+                      isPassword: true,
+                      hintText: 'Confirm password',
+                      controller: _confirmPassCtrl,
+                    ),
+                    SizedBox(height: 10.h),
+                    TextButton(
+                        onPressed: () => locator<NavigationService>()
+                            .pushReplacementNamed(Routes.loginScreenRoute),
+                        child: const Text('Already have an Account?')),
+                    SizedBox(height: 10.h),
+                    AnimatedButton(
+                      buttonTitle: 'Sign Up',
+                      onTap: () {
+                        userModel = UserModel(
+                          email: _emailCtrl.text,
+                          name: _nameCtrl.text,
+                        );
+                        _onSubmit(
                             email: _emailCtrl.text,
-                            name: _nameCtrl.text,
-                          );
-                          _onSubmit(
-                              email: _emailCtrl.text,
-                              password: _passCtrl.text,
-                              ctx: context);
-                        },
-                      )
-                    ],
-                  ),
+                            password: _passCtrl.text,
+                            ctx: context);
+                      },
+                    )
+                  ],
                 ),
               ),
-            );
-          },
-        ),
+            ),
+          );
+        },
       ),
     );
   }

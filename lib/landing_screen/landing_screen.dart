@@ -2,7 +2,6 @@ import 'package:chat_app/home_screen/screens/home_screen.dart';
 import 'package:chat_app/search/screens/search_screen.dart';
 import 'package:chat_app/settings/settings_screen.dart';
 import 'package:chat_app/shop/screens/shop_screen.dart';
-import 'package:chat_app/widgets/custom_appbar_widget.dart';
 import 'package:flutter/material.dart';
 
 class LandingScreen extends StatefulWidget {

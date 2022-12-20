@@ -29,7 +29,7 @@ class _SliderScreenState extends State<SliderScreen> {
   );
 
   _animatePage(int length) {
-    Timer.periodic(Duration(seconds: 4), (Timer timer) {
+    Timer.periodic(const Duration(seconds: 4), (Timer timer) {
       if (_currentPage == (length - 1)) {
         end = true;
       } else if (_currentPage == 0) {
@@ -37,12 +37,12 @@ class _SliderScreenState extends State<SliderScreen> {
       }
       if (end == false) {
         _currentPage++;
-      } else { 
+      } else {
         _currentPage--;
       }
       _controller.animateToPage(
         _currentPage,
-        duration: Duration(seconds: 5),
+        duration: const Duration(seconds: 5),
         curve: Curves.linear,
       );
     });

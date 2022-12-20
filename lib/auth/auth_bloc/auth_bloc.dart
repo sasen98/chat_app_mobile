@@ -1,7 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:chat_app/auth/model/user_model.dart';
 import 'package:chat_app/auth/repo/auth_repo.dart';
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 

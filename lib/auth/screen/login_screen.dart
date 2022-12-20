@@ -1,12 +1,13 @@
 import 'package:chat_app/auth/auth_bloc/auth_bloc.dart';
 import 'package:chat_app/constants/auth_constants.dart';
-import 'package:chat_app/custom_extension/validation_extension.dart';
 import 'package:chat_app/routes/routes.dart';
+import 'package:chat_app/services/input_validator_service.dart';
 import 'package:chat_app/services/locator_service.dart';
 import 'package:chat_app/services/navigation_service.dart';
 import 'package:chat_app/widgets/animated_button.dart';
 import 'package:chat_app/widgets/custom_snackbar_widget.dart';
 import 'package:chat_app/widgets/custom_textfield_widget.dart';
+import 'package:chat_app/widgets/exit_alert_widget.dart';
 import 'package:chat_app/widgets/screen_padding_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -40,21 +41,9 @@ class _LoginScreenState extends State<LoginScreen> {
   DateTime? currentBackPressTime;
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: WillPopScope(
-        onWillPop: () {
-          DateTime now = DateTime.now();
-          if (currentBackPressTime == null ||
-              now.difference(currentBackPressTime!) >
-                  const Duration(seconds: 2)) {
-            currentBackPressTime = now;
-            ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text('Press back again to Exit')));
-            return Future.value(false);
-          }
-          return Future.value(true);
-        },
-        child: BlocConsumer<AuthBloc, AuthState>(
+    return ExitAlertWidget(
+      child: Scaffold(
+        body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.authStatus == AuthStatus.success) {
               showSnackBar(
@@ -83,21 +72,17 @@ class _LoginScreenState extends State<LoginScreen> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       CustomTextFielWidget(
-                          validator: (val) {
-                            if (!val.isValidEmail) {
-                              return 'Invalid Email';
-                            }
-                          },
+                          validator: (val) =>
+                              InputValidatorService.validateEmail(
+                                  email: _emailCtrl.text),
                           hintText: 'Email Id',
                           controller: _emailCtrl,
                           keyboardType: TextInputType.name),
                       SizedBox(height: 10.h),
                       CustomTextFielWidget(
-                          validator: (val) {
-                            if (val == null) {
-                              return 'Invalid Password';
-                            }
-                          },
+                          validator: (val) =>
+                              InputValidatorService.validatePassword(
+                                  password: _passCtrl.text),
                           controller: _passCtrl,
                           isPassword: true,
                           hintText: 'Password',
@@ -105,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       SizedBox(height: 10.h),
                       TextButton(
                           onPressed: () => locator<NavigationService>()
-                              .pushReplacementNamed(Routes.signUpScreenRoute),
+                              .navigateTo(Routes.signUpScreenRoute),
                           child: const Text('SignUp Instead?')),
                       SizedBox(height: 10.h),
                       AnimatedButton(
